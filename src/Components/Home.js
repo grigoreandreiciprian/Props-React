@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-
+import React from "react";
 import Header from "./Header";
-
+import { useState, useEffect } from "react";
 import Player from "./Player";
-
 import Input from "./Input";
 
-function App() {
+const Home = () => {
   let [players, setPlayers] = useState([
     {
       id: 1,
@@ -39,10 +37,22 @@ function App() {
     },
   ]);
 
-  const [playerName, setPlayerName] = useState("");
+  let [playerName, setPlayerName] = useState("");
+  let [curentPlayer, setCurentPlayer] = useState("");
+  let [score, setScore] = useState("");
 
+  console.log(curentPlayer);
+  console.log(score);
   const scores = players.map((e) => e.score);
 
+  const handleChanger = (playerName) => {
+    setPlayerName(playerName);
+  };
+
+  const handleScore = (curentPlayer, score) => {
+    setCurentPlayer(curentPlayer);
+    setScore(score);
+  };
   const randomIds = () => {
     let ids = players.map((e) => e.id);
     let id = Math.floor(Math.random() * 100) + 1;
@@ -50,20 +60,6 @@ function App() {
       id = Math.floor(Math.random() * 100) + 1;
     }
     return id;
-  };
-
-  const totalScore = (id, score) => {
-    let prevPlayers = players.filter((e) => e.id != id);
-    let curentPlayer = players.filter((e) => e.id == id)[0];
-    curentPlayer.score = +score;
-
-    prevPlayers.unshift(curentPlayer);
-
-    setPlayers(prevPlayers);
-  };
-
-  const handleChanger = (playerName) => {
-    setPlayerName(playerName);
   };
 
   const add = () => {
@@ -88,17 +84,23 @@ function App() {
 
   return (
     <>
-      <Header players={players} title="Scoreboard" stopwatch="stopwach" />
-
+      <Header players={players} />
       <main>
         {players.map((e) => {
-          return <Player player={e} score={totalScore} remove={remove} />;
+          return (
+            <Player
+              key={e.id}
+              player={e}
+              remove={remove}
+              handleScore={handleScore}
+            />
+          );
         })}
 
-        <Input add={add} handleChanger={handleChanger} />
+        <Input handleChanger={handleChanger} add={add} />
       </main>
     </>
   );
-}
+};
 
-export default App;
+export default Home;

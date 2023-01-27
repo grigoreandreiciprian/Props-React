@@ -1,22 +1,21 @@
-import React, { useEffect } from "react";
-
+import React from "react";
 import Counter from "./Counter";
 
-const Player = ({ player, score, remove }) => {
+const Player = ({ player, remove, handleScore }) => {
   return (
-    <div class="playerBox">
-      <div class="player">
+    <div className="playerBox">
+      <div className="player">
         <i
-          class="fa-solid fa-x cross"
+          className="fa-solid fa-x cross"
           onClick={() => {
             remove(player.id);
           }}
         ></i>
-        <i class="fa-solid fa-crown crown"></i>
+        <i className="fa-solid fa-crown crown"></i>
         <p>{player.name}</p>
       </div>
 
-      <Counter score={score} player={player} />
+      <Counter player={player} handleScore={handleScore} />
     </div>
   );
 };

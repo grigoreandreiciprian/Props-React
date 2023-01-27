@@ -1,30 +1,32 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-const Counter = ({ score, player }) => {
-  let [index, setIndex] = useState(0);
+const Counter = ({ player, handleScore }) => {
+  let [score, setScore] = useState(player.score);
+
+  const increaseScore = () => {
+    const newScore = score + 1;
+    setScore(newScore);
+  };
+
+  const decreaseScore = () => {
+    if (score > 0) {
+      const newScore = score - 1;
+      setScore(newScore);
+    }
+  };
+
+  useEffect(() => {
+    handleScore(player.id, score);
+  }, [score]);
 
   return (
-    <div class="counter">
-      <button
-        class="gray reduce"
-        onClick={() => {
-          if (index > 0) {
-            setIndex((prevIndex) => prevIndex - 1);
-            score(player.id, player.score - 1);
-          }
-        }}
-      >
+    <div className="counter">
+      <button className="gray reduce" onClick={decreaseScore}>
         -
       </button>
-      <p>{index}</p>
-      <button
-        class="gray add"
-        onClick={() => {
-          score(player.id, player.score + 1);
-          setIndex((prevIndex) => prevIndex + 1);
-        }}
-      >
+      <p>{score}</p>
+      <button className="gray add" onClick={increaseScore}>
         +
       </button>
     </div>
