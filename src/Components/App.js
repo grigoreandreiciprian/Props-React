@@ -6,126 +6,99 @@ import Player from "./Player";
 
 import Input from "./Input";
 
-
 function App() {
-
-  let [players,setPlayers] = useState([
+  let [players, setPlayers] = useState([
     {
-      id:1,
-      score:0,
-      name:"Paul",
+      id: 1,
+      score: 0,
+      name: "Paul",
     },
 
     {
-      id:2,
-      score:0,
-      name:"Jhonny",
-    },
-
-
-    {
-      id:3,
-      score:0,
-      name:"Depp",
-    },
-
-
-    {
-      id:4,
-      score:0,
-      name:"Maria",
+      id: 2,
+      score: 0,
+      name: "Jhonny",
     },
 
     {
-      id:5,
-      score:0,
-      name:"Arthur",
+      id: 3,
+      score: 0,
+      name: "Depp",
     },
-  ])
 
-  
+    {
+      id: 4,
+      score: 0,
+      name: "Maria",
+    },
 
-  const randomIds=()=>{
+    {
+      id: 5,
+      score: 0,
+      name: "Arthur",
+    },
+  ]);
 
-    let ids=players.map(e=>e.id);
-    let id=Math.floor(Math.random()*100)+1;
-    while(ids.includes(id)==true){
+  const [playerName, setPlayerName] = useState("");
 
-        id=Math.floor(Math.random()*100)+1;
-    
+  const scores = players.map((e) => e.score);
+
+  const randomIds = () => {
+    let ids = players.map((e) => e.id);
+    let id = Math.floor(Math.random() * 100) + 1;
+    while (ids.includes(id) == true) {
+      id = Math.floor(Math.random() * 100) + 1;
     }
     return id;
-}
+  };
 
-let newPlayer={
-  id:randomIds(),
-  score:0,
-  name:""
-}
+  const totalScore = (id, score) => {
+    let prevPlayers = players.filter((e) => e.id != id);
+    let curentPlayer = players.filter((e) => e.id == id)[0];
+    curentPlayer.score = +score;
 
- const totalScore= (id,score) =>{
+    prevPlayers.unshift(curentPlayer);
 
-  let prevPlayers= players.filter(e=>e.id!=id)
-  let curentPlayer=players.filter(e=>e.id==id)[0]
-   curentPlayer.score=+score
+    setPlayers(prevPlayers);
+  };
 
-   prevPlayers.unshift(curentPlayer)
-   
-    setPlayers(prevPlayers)
- }
+  const handleChanger = (playerName) => {
+    setPlayerName(playerName);
+  };
 
- const handleAdd= (e) =>{
+  const add = () => {
+    let newPlayers = players.map((e) => e);
 
-  let obj=e.target
+    let newPlayer = {
+      id: randomIds(),
+      score: 0,
+      name: playerName,
+    };
 
+    newPlayers.push(newPlayer);
 
-  if(obj.classList.contains("player")){
-       
-       newPlayer.name=obj.value
-       newPlayer.id=randomIds()      
-  }
-}
+    setPlayers(newPlayers);
+  };
 
+  const remove = (id) => {
+    let newPlayers = players.filter((e) => e.id != id);
 
-const add=(newPlayer) =>{
-
-  let newPlayers=players.map(e=>e)
-
-  newPlayers.push(newPlayer)
-
-  setPlayers(newPlayers)
-
-}
-
-
-const remove = (id) =>{
-      
-  let  newPlayers= players.filter(e=> e.id != id)
-   
-  setPlayers(newPlayers)
-}
-
-
-
- 
+    setPlayers(newPlayers);
+  };
 
   return (
     <>
-     <Header players={players}  title="Scoreboard"  stopwatch="stopwach"  />
+      <Header players={players} title="Scoreboard" stopwatch="stopwach" />
 
-     <main>
-         {
-          players.map(e=>{
-           return <Player player={e} score={totalScore} remove={remove} />
-          })
-         }
+      <main>
+        {players.map((e) => {
+          return <Player player={e} score={totalScore} remove={remove} />;
+        })}
 
-         <Input   handleAdd={handleAdd}  add={add}  newPlayer={newPlayer}/>
-     </main>
-
-     </>
-     
-  )
+        <Input add={add} handleChanger={handleChanger} />
+      </main>
+    </>
+  );
 }
 
 export default App;

@@ -1,19 +1,40 @@
-import React from 'react'
+import React from "react";
 
-import { useState } from 'react'
+import { useState, useEffect } from "react";
 
-export default ({handleAdd,add,newPlayer}) => {
+const Input = ({ add, handleChanger }) => {
+  const [playerName, setPlayerName] = useState("");
 
-    
-console.log(newPlayer)
+  const handleAdd = (e) => {
+    let obj = e.target;
 
-   
+    if (obj.classList.contains("player")) {
+      setPlayerName(obj.value);
+    }
+  };
+
+  useEffect(() => {
+    handleChanger(playerName);
+  }, [playerName]);
+
   return (
-        <div class="input">
-            <input type="text" className='player' placeholder="ENTER A PLAYER NAME" onChange={handleAdd}></input>
-            <button class="btn playerAdd" onClick={() =>{
-              add(newPlayer)}
-            }>Add player</button>
-        </div>
-  )
-}
+    <div class="input">
+      <input
+        type="text"
+        className="player"
+        placeholder="ENTER A PLAYER NAME"
+        onChange={handleAdd}
+      ></input>
+      <button
+        class="btn playerAdd"
+        onClick={() => {
+          add();
+        }}
+      >
+        Add player
+      </button>
+    </div>
+  );
+};
+
+export default Input;
